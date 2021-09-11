@@ -16,6 +16,8 @@ using TamoodlApi.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TamoodlApi.Data.Contexts;
+using TamoodlApi.Data.Students;
 
 namespace TamoodlApi
 {
@@ -34,7 +36,14 @@ namespace TamoodlApi
             // Configuring JWT
             services.Configure<JWT>(_configuration.GetSection("JWT"));
 
+            // Registering services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IStudentsService, StudentsService>();
+
+            // Adding contexts
+            services.AddDbContext<DataDbContext>(options => options.UseInMemoryDatabase(
+                _configuration.GetSection("Databases")["DataDb"])
+            );
 
             services.AddDbContext<UsersDbContext>(options => options.UseInMemoryDatabase(
                 _configuration.GetSection("Databases")["UsersDb"])
@@ -74,19 +83,11 @@ namespace TamoodlApi
             }
 
             app.UseRouting();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(ep => ep.MapControllers());
-
-            // app.UseEndpoints(endpoints =>
-            // {
-            //     endpoints.MapGet("/", async context =>
-            //     {
-            //         await context.Response.WriteAsync("Hello World!");
-            //     });
-            // });
         }
     }
 }
