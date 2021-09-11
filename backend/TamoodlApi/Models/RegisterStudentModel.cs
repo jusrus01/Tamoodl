@@ -2,14 +2,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TamoodlApi.Models
 {
-    public class TokenRequestModel
+    public class RegisterStudentModel
     {
         [Required]
-        [EmailAddress]
-        [StringLength(100)]
+        [StringLength(80)]
         public string Email { get; set; }
         [Required]
-        [StringLength(100)]
+        [StringLength(80)]
+        public string Username { get; set; }
+        [Required]
+        [StringLength(80)]
         public string Password { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TamoodlApi.Data.Accounts;
 using TamoodlApi.Models;
@@ -19,14 +20,25 @@ namespace TamoodlApi.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(TokenRequestModel model)
         {
-            var item = await _userService.GetTokenAsync(model);
+            var authToken = await _userService.GetTokenAsync(model);
 
-            if(item == null)
+            if(authToken == null)
             {
                 return BadRequest();
             }
 
-            return Ok(item);
+            return Ok(authToken);
+        }
+
+        [Authorize(Roles = "Teacher,Admin")]
+        [HttpPost("create/student")]
+        public async Task<ActionResult<string>> Register(RegisterStudentModel model)
+        {
+            if(await _userService.CreateStudent(model))
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }
