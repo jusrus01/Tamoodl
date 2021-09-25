@@ -16,6 +16,7 @@ using TamoodlApi.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoMapper;
 using TamoodlApi.Data.Contexts;
 using TamoodlApi.Data.Students;
 using TamoodlApi.Data.Courses;
@@ -78,6 +79,7 @@ namespace TamoodlApi
             });
 
             services.AddControllers();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

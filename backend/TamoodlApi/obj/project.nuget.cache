@@ -1,14 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "7XfiSf00pOl+wXICGN2kF15PZOj48GUP6X6v43LuZgMQg2z36na8vHO38KJcuT5ebfn+cVFcloGRh216Zmokvw==",
+  "dgSpecHash": "Y6kAv71NOi80gTSAz2/0HqevPEyR3Agcl1Al6DQZ1aBvBw+KEw8rLZmzBlrYG1Ij69GyixlK5Jv+3XA4zmUFXA==",
   "success": true,
   "projectFilePath": "/opt/lampp/htdocs/projects/Tomoodl/backend/TamoodlApi/TamoodlApi.csproj",
   "expectedPackageFiles": [
+    "/home/j/.nuget/packages/automapper/10.1.1/automapper.10.1.1.nupkg.sha512",
+    "/home/j/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/8.1.1/automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
     "/home/j/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/5.0.9/microsoft.aspnetcore.authentication.jwtbearer.5.0.9.nupkg.sha512",
     "/home/j/.nuget/packages/microsoft.aspnetcore.cryptography.internal/5.0.9/microsoft.aspnetcore.cryptography.internal.5.0.9.nupkg.sha512",
     "/home/j/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/5.0.9/microsoft.aspnetcore.cryptography.keyderivation.5.0.9.nupkg.sha512",
     "/home/j/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/5.0.9/microsoft.aspnetcore.identity.entityframeworkcore.5.0.9.nupkg.sha512",
-    "/home/j/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
+    "/home/j/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/home/j/.nuget/packages/microsoft.entityframeworkcore/5.0.9/microsoft.entityframeworkcore.5.0.9.nupkg.sha512",
     "/home/j/.nuget/packages/microsoft.entityframeworkcore.abstractions/5.0.9/microsoft.entityframeworkcore.abstractions.5.0.9.nupkg.sha512",
     "/home/j/.nuget/packages/microsoft.entityframeworkcore.analyzers/5.0.9/microsoft.entityframeworkcore.analyzers.5.0.9.nupkg.sha512",
@@ -34,6 +36,7 @@
     "/home/j/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "/home/j/.nuget/packages/system.diagnostics.diagnosticsource/5.0.1/system.diagnostics.diagnosticsource.5.0.1.nupkg.sha512",
     "/home/j/.nuget/packages/system.identitymodel.tokens.jwt/6.7.1/system.identitymodel.tokens.jwt.6.7.1.nupkg.sha512",
+    "/home/j/.nuget/packages/system.reflection.emit/4.7.0/system.reflection.emit.4.7.0.nupkg.sha512",
     "/home/j/.nuget/packages/system.security.cryptography.cng/4.5.0/system.security.cryptography.cng.4.5.0.nupkg.sha512"
   ],
   "logs": []
