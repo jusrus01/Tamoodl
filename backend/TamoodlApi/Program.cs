@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TamoodlApi.Data.Courses;
+using TamoodlApi.Data.Students;
 using TamoodlApi.Seeds;
 
 namespace TamoodlApi
@@ -28,9 +30,13 @@ namespace TamoodlApi
                 {
                     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    // var studentsService = services.GetRequiredService<IStudentsService>();
+                    var coursesService = services.GetRequiredService<ICoursesService>();
 
                     await DefaultRoles.SeedRolesAsync(userManager, roleManager);
-                    await DefaultRoles.SeedStudentAsync(userManager, roleManager);
+                    // await DefaultRoles.SeedStudentAsync(userManager, roleManager, studentsService);
+                    await DefaultRoles.SeedCourse(coursesService);
+
                     await DefaultRoles.SeedTeacherAsync(userManager, roleManager);
                     await DefaultRoles.SeedAdminAsync(userManager, roleManager);
 

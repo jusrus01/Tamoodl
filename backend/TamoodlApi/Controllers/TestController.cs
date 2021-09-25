@@ -7,20 +7,29 @@ using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Primitives;
 using TamoodlApi.Authentication;
+using TamoodlApi.Data.Courses;
 
 namespace TamoodlApi.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/test")]
     [ApiController]
     public class TestController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private ICoursesService _coursesService;
 
-        public TestController(UserManager<IdentityUser> userManager)
+        public TestController(UserManager<IdentityUser> userManager, ICoursesService courseService)
         {
             _userManager = userManager;
+            _coursesService = courseService;
         }
+
+        [HttpGet("course")]
+        public ActionResult GetTestCourse()
+        {
+            return Ok(_coursesService.FindCourseByName("Math"));
+        } 
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<IdentityUser>>> Index()
@@ -33,6 +42,13 @@ namespace TamoodlApi.Controllers
             var to = handler.ReadToken(token) as JwtSecurityToken;
 
             return Ok(to);
+        }
+
+        [HttpGet("all")]
+        [AllowAnonymous]
+        public ActionResult GetAll()
+        {
+            return Ok(_userManager.Users.ToList());
         }
 
         [Authorize(Roles = "Teacher")]

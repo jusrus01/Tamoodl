@@ -3,14 +3,14 @@ using TamoodlApi.Models;
 
 namespace TamoodlApi.Data.Contexts
 {
-    public class DataDbContext : DbContext
+    public class CoursesDbContext : DbContext
     {
-        public DataDbContext(DbContextOptions<DataDbContext> options)
+        public CoursesDbContext(DbContextOptions<CoursesDbContext> options)
             :
             base(options)
         {
             
         }
-        public DbSet<StudentModel> Students { get; set; }
+        public DbSet<CourseModel> Courses { get; set; }
     }
 }

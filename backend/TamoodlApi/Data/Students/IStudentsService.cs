@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TamoodlApi.Models;
 
@@ -5,6 +6,8 @@ namespace TamoodlApi.Data.Students
 {
     public interface IStudentsService
     {
-        StudentModel FindStudentByEmail(string email);
+        Task<StudentModel> ViewGrades(string studentsEmail, string courseName);
+        // void ViewCourse();
+
     }
 }

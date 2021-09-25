@@ -18,6 +18,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TamoodlApi.Data.Contexts;
 using TamoodlApi.Data.Students;
+using TamoodlApi.Data.Courses;
+using TamoodlApi.Data.Teachers;
 
 namespace TamoodlApi
 {
@@ -38,10 +40,13 @@ namespace TamoodlApi
 
             // Registering services
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IStudentsService, StudentsService>();
+            // services.AddScoped<IStudentsService, StudentsService>();
+            services.AddScoped<ICoursesService, CoursesService>();
+            services.AddScoped<ITeachersService, TeachersService>();
+
 
             // Adding contexts
-            services.AddDbContext<DataDbContext>(options => options.UseInMemoryDatabase(
+            services.AddDbContext<CoursesDbContext>(options => options.UseInMemoryDatabase(
                 _configuration.GetSection("Databases")["DataDb"])
             );
 

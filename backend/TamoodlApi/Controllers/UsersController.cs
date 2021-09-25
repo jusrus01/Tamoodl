@@ -30,7 +30,7 @@ namespace TamoodlApi.Controllers
             return Ok(authToken);
         }
 
-        [Authorize(Roles = "Teacher,Admin")]
+        // [Authorize(Roles = "Teacher,Admin")]
         [HttpPost("create/student")]
         public async Task<ActionResult<string>> Register(RegisterStudentModel model)
         {
