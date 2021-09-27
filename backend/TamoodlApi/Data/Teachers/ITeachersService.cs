@@ -12,5 +12,6 @@ namespace TamoodlApi.Data.Teachers
         Task<bool> AddGrade(CourseModel currentCourse, StudentModel student, byte grade);
         Task<bool> RemoveGrade(CourseModel currentCourse, StudentModel student, byte grade);
         Task<bool> UpdateGrade(CourseModel currentCourse, StudentModel student, byte grade);
+        void SaveChanges();
     }
 }
