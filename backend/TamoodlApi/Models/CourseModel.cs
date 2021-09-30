@@ -15,6 +15,6 @@ namespace TamoodlApi.Models
         public string OwnerEmail { get; set; }
         [Required]
         public DateTime CreationDate { get; set; }
-        public StudentModel[] Students { get; set; }
+        // public StudentModel[] Students { get; set; }
     }
 }

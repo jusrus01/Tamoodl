@@ -12,5 +12,6 @@ namespace TamoodlApi.Data.Contexts
             
         }
         public DbSet<CourseModel> Courses { get; set; }
+        public DbSet<StudentAddModel> Students { get; set; }
     }
 }

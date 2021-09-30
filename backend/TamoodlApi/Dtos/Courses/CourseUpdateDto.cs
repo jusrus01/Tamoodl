@@ -1,13 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using TamoodlApi.Models;
 
 namespace TamoodlApi.Dtos.Courses
 {
-    public class CourseReadDto
+    public class CourseUpdateDto
     {
+        [Required]
+        [MaxLength(20)]
         public string CourseName { get; set; }
+        [Required]
+        [EmailAddress]
         public string OwnerEmail { get; set; }
-        public DateTime CreationDate { get; set; }
     }
 }

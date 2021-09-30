@@ -7,7 +7,8 @@ namespace TamoodlApi.Data.Courses
     {
         Task<bool> CreateCourse(string courseName, string ownerEmail);
         void SaveChanges();
-
         CourseModel FindCourseByName(string courseName);
+        bool UpdateCourse(CourseModel model);
+        bool UpdateStudent(StudentAddModel model);
     }
 }

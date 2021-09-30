@@ -25,7 +25,8 @@ namespace TamoodlApi.Data.Students
                 return null;
             }
 
-            return course.Students.Where(s => s.Email == studentsEmail).FirstOrDefault();
+            // return _context.Students.Where(s => s.Email == studentsEmail).FirstOrDefault();
+            return null;
         }
     }
 }

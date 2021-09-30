@@ -42,6 +42,26 @@ namespace TamoodlApi.Data.Courses
             _context.SaveChanges();
         }
 
-        
+        public bool UpdateCourse(CourseModel model)
+        {
+            if(model == null)
+            {
+                return false;
+            }
+            _context.Courses.Update(model);
+
+            return true;
+        }
+
+        public bool UpdateStudent(StudentAddModel model)
+        {
+            if(model == null)
+            {
+                return false;
+            }
+            _context.Students.Update(model);
+
+            return true;
+        }
     }
 }
