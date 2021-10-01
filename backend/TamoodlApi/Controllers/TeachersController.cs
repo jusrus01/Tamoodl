@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using TamoodlApi.Data.Courses;
 using TamoodlApi.Data.Students;
 using TamoodlApi.Data.Teachers;
+using TamoodlApi.Dtos;
 using TamoodlApi.Dtos.Courses;
 using TamoodlApi.Models;
 
@@ -16,7 +17,7 @@ namespace TamoodlApi.Controllers
     {
         private readonly ITeachersService _teachersService;
         private readonly IMapper _mapper;
-        private ICoursesService _coursesService;
+        private readonly ICoursesService _coursesService;
         private readonly IStudentsService _studentsService;
 
         public TeachersController(
@@ -31,6 +32,12 @@ namespace TamoodlApi.Controllers
             _studentsService = studentsService;
         }
 
+        [HttpDelete("removeGrade")]
+        public async Task<ActionResult<GradeReadDto>> RemoveGrade()
+        {
+
+        }
+
         [HttpPost("create")]
         public async Task<ActionResult<CourseReadDto>> CreateCourse(CourseCreateDto courseCreateDto)
         {
@@ -40,7 +47,7 @@ namespace TamoodlApi.Controllers
             }
 
             var course = _mapper.Map<CourseCreateDto, CourseModel>(courseCreateDto);
-            // course.CreationDate = DateTime.Now;
+            course.Date = DateTime.Now.ToLongDateString();
             
             var result = await _coursesService.AddCourse(course);
 
@@ -89,15 +96,12 @@ namespace TamoodlApi.Controllers
                 return BadRequest();
             }
 
-            // var updatedCourse = await _teachersService.AddStudent(course, addModel);
-            var updatedStudent = _teachersService.AddGrade(model);
+            var updatedStudent = await _teachersService.AddGrade(model);
             
             if(updatedStudent == null)
             {
                 return NoContent();
             }
-
-            // _teachersService.SaveChanges();
 
             return updatedStudent;
         }

@@ -8,13 +8,14 @@ namespace TamoodlApi.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        [MaxLength(20)]
+        [MaxLength(100)]
         public string CourseName { get; set; }
         [Required]
         [EmailAddress]
+        [MaxLength(100)]
         public string OwnerEmail { get; set; }
-        // [Required]
-        // public DateTime CreationDate { get; set; }
-        // public StudentModel[] Students { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string Date { get; set; }
     }
 }

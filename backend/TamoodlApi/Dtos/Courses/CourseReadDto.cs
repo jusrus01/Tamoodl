@@ -8,6 +8,6 @@ namespace TamoodlApi.Dtos.Courses
     {
         public string CourseName { get; set; }
         public string OwnerEmail { get; set; }
-        public DateTime CreationDate { get; set; }
+        public string Date { get; set; }
     }
 }

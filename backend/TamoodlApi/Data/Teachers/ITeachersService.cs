@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using TamoodlApi.Dtos;
 using TamoodlApi.Models;
 
 namespace TamoodlApi.Data.Teachers
@@ -11,7 +12,8 @@ namespace TamoodlApi.Data.Teachers
         // Task<bool> RemoveStudent(StudentModel model);
         // CourseModel FindCourseByName(string courseName);
         // Task<CourseModel> ViewCourse(string courseName);
-        StudentModel AddGrade(AddGradeModel model);
+        Task<StudentModel> AddGrade(AddGradeModel model);
+        GradeReadDto RemoveGrade(string date, StudentModel student);
         // Task<bool> RemoveGrade(CourseModel currentCourse, StudentModel student, byte grade);
         // Task<bool> UpdateGrade(CourseModel currentCourse, StudentModel student, byte grade);
         void SaveChanges();

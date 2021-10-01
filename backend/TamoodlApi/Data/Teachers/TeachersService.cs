@@ -6,6 +6,7 @@ using System;
 using TamoodlApi.Data.Courses;
 using TamoodlApi.Data.Students;
 using System.Collections.Generic;
+using TamoodlApi.Dtos;
 
 namespace TamoodlApi.Data.Teachers
 {
@@ -25,7 +26,7 @@ namespace TamoodlApi.Data.Teachers
             _coursesService = coursesService;
             _studentsService = studentsService;
         }
-        public StudentModel AddGrade(AddGradeModel model)
+        public async Task<StudentModel> AddGrade(AddGradeModel model)
         {
             var student = _studentsService.FindStudent(model.CourseName, model.StudentEmail);
 
@@ -34,47 +35,54 @@ namespace TamoodlApi.Data.Teachers
                 return null;
             }
 
+            var newGrade = new GradeModel
+            {
+                CourseName = model.CourseName,
+                StudentEmail = model.StudentEmail,
+                Grade = model.Grade,
+                Date = DateTime.Now.ToLongDateString()
+            };
+
+            // adding new grade to database
+            await _context.Grades.AddAsync(newGrade);
+            _studentsService.SaveChanges();
+
+            // fetching all grades and returning it to user
             student.Grades = _context.Grades.Where(grade =>
                 grade.CourseName == student.CourseName &&
-                grade.StudentEmail == student.Email).ToList();
+                grade.StudentEmail == student.Email)
+                .Select(g => new GradeReadDto { Grade = g.Grade, Date = g.Date, CourseName = g.CourseName })
+                .ToList();
 
-            if(student.Grades == null)
-            {
-                student.Grades = new List<GradeModel>();
-            }
-
-            _context.Grades.Add(
-                new GradeModel
-                {
-                    CourseName = model.CourseName,
-                    StudentEmail = model.StudentEmail,
-                    Grade = model.Grade
-                }
-            );
-
-            student.Grades.Add(new GradeModel
-            {
-                Grade = model.Grade
-            });
-
-            if(_studentsService.UpdateStudent(student))
-            {
-                _studentsService.SaveChanges();
-                return student;
-            }
-
-            return null;
+            return student;
         }
 
-        public Task<bool> RemoveGrade(CourseModel currentCourse, StudentModel student, byte grade)
+        public GradeReadDto RemoveGrade(string date, StudentModel student)
         {
-            throw new System.NotImplementedException();
+            var grade = _context.Grades.Where(g => 
+                g.CourseName == student.CourseName &&
+                g.StudentEmail == student.Email &&
+                g.Date == date).FirstOrDefault();
+
+            if(grade == null)
+            {
+                return null;
+            }
+            
+            _context.Grades.Remove(grade);
+
+            return new GradeReadDto { Date = grade.Date, CourseName = grade.CourseName, Grade = grade.Grade };
         }
 
-        public Task<bool> RemoveStudent(StudentModel model)
-        {
-            throw new System.NotImplementedException();
-        }
+        // public Task<bool> RemoveGrade(CourseModel currentCourse, StudentModel student, byte grade)
+        // {
+        //     throw new System.NotImplementedException();
+        // }
+
+        // public Task<bool> RemoveStudent(StudentModel model)
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         public void SaveChanges()
         {
