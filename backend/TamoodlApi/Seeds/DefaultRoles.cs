@@ -21,7 +21,7 @@ namespace TamoodlApi.Seeds
         public static async Task SeedCourse( ICoursesService coursesService)
         {
 
-            coursesService.CreateCourse("Math", "owener");
+            coursesService.AddCourse(new CourseModel {CourseName = "Math", OwnerEmail = "owener"});
             coursesService.SaveChanges();
             // var user = new IdentityUser
             // {

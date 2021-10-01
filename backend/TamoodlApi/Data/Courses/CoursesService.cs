@@ -15,21 +15,21 @@ namespace TamoodlApi.Data.Courses
             _context = context;
         }
 
-        public async Task<bool> CreateCourse(string courseName, string ownerEmail)
+        public async Task<CourseModel> AddCourse(CourseModel newCourse)
         {
-            if(_context.Courses.Where(c => c.CourseName == courseName && c.OwnerEmail == ownerEmail).Any())
+            if(FindCourse(newCourse) == null)
             {
-                return false;
-            }            
+                await _context.Courses.AddAsync(newCourse);
+                return newCourse;
+            }
+            
+            return null;
+        }
 
-            await _context.AddAsync(new CourseModel
-            {
-                CourseName = courseName,
-                OwnerEmail = ownerEmail,
-                CreationDate = DateTime.Now
-            });
-
-            return true;
+        public CourseModel FindCourse(CourseModel course)
+        {
+            return _context.Courses.Where(c => c.CourseName == course.CourseName &&
+                c.OwnerEmail == course.OwnerEmail).FirstOrDefault();
         }
 
         public CourseModel FindCourseByName(string courseName)
@@ -40,28 +40,6 @@ namespace TamoodlApi.Data.Courses
         public void SaveChanges()
         {
             _context.SaveChanges();
-        }
-
-        public bool UpdateCourse(CourseModel model)
-        {
-            if(model == null)
-            {
-                return false;
-            }
-            _context.Courses.Update(model);
-
-            return true;
-        }
-
-        public bool UpdateStudent(StudentAddModel model)
-        {
-            if(model == null)
-            {
-                return false;
-            }
-            _context.Students.Update(model);
-
-            return true;
         }
     }
 }

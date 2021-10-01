@@ -13,8 +13,8 @@ namespace TamoodlApi.Models
         [Required]
         [EmailAddress]
         public string OwnerEmail { get; set; }
-        [Required]
-        public DateTime CreationDate { get; set; }
+        // [Required]
+        // public DateTime CreationDate { get; set; }
         // public StudentModel[] Students { get; set; }
     }
 }

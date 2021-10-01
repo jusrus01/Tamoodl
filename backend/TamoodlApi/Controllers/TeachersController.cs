@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TamoodlApi.Data.Courses;
+using TamoodlApi.Data.Students;
 using TamoodlApi.Data.Teachers;
 using TamoodlApi.Dtos.Courses;
 using TamoodlApi.Models;
@@ -16,12 +17,18 @@ namespace TamoodlApi.Controllers
         private readonly ITeachersService _teachersService;
         private readonly IMapper _mapper;
         private ICoursesService _coursesService;
+        private readonly IStudentsService _studentsService;
 
-        public TeachersController(ITeachersService teachersService, IMapper mapper, ICoursesService coursesService)
+        public TeachersController(
+            ITeachersService teachersService,
+            IMapper mapper,
+            ICoursesService coursesService,
+            IStudentsService studentsService)
         {
             _teachersService = teachersService;
             _mapper = mapper;
             _coursesService = coursesService;
+            _studentsService = studentsService;
         }
 
         [HttpPost("create")]
@@ -33,22 +40,22 @@ namespace TamoodlApi.Controllers
             }
 
             var course = _mapper.Map<CourseCreateDto, CourseModel>(courseCreateDto);
-            course.CreationDate = DateTime.Now;
+            // course.CreationDate = DateTime.Now;
             
-            bool result = await _teachersService.CreateCourse(course);
+            var result = await _coursesService.AddCourse(course);
 
-            if(result)
+            if(result == null)
             {
-                _teachersService.SaveChanges();
-
-                return Ok(_mapper.Map<CourseModel, CourseReadDto>(course));
+                return NoContent();
             }
 
-            return NoContent();
+            _teachersService.SaveChanges();
+
+            return Ok(_mapper.Map<CourseModel, CourseReadDto>(course));
         }
 
         [HttpPost("addStudent")]
-        public async Task<ActionResult<StudentModel>> AddStudent(StudentAddModel addModel)
+        public async Task<ActionResult<StudentModel>> AddStudent(StudentModel addModel)
         {
             if(!ModelState.IsValid || addModel == null)
             {
@@ -62,15 +69,16 @@ namespace TamoodlApi.Controllers
                 return BadRequest("Such course does not exist");
             }
 
-            var updatedCourse = await _teachersService.AddStudent(course, addModel);
+            var updatedStudent = await _studentsService.AddStudent(addModel);
 
-            if(_coursesService.UpdateCourse(updatedCourse))
+            if(updatedStudent == null)
             {
-                _coursesService.SaveChanges();
-                return Ok(addModel);
+                return NoContent();
             }
-
-            return NoContent();
+            
+            _coursesService.SaveChanges();
+            
+            return Ok(addModel);
         }
 
         [HttpPost("addGrade")]
@@ -82,12 +90,16 @@ namespace TamoodlApi.Controllers
             }
 
             // var updatedCourse = await _teachersService.AddStudent(course, addModel);
-            if(_teachersService.AddGrade(model))
+            var updatedStudent = _teachersService.AddGrade(model);
+            
+            if(updatedStudent == null)
             {
-                
+                return NoContent();
             }
 
-            return NoContent();
+            // _teachersService.SaveChanges();
+
+            return updatedStudent;
         }
     }
 }

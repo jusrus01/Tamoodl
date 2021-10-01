@@ -4,6 +4,8 @@ using System.Linq;
 using TamoodlApi.Models;
 using System;
 using TamoodlApi.Data.Courses;
+using TamoodlApi.Data.Students;
+using System.Collections.Generic;
 
 namespace TamoodlApi.Data.Teachers
 {
@@ -11,75 +13,57 @@ namespace TamoodlApi.Data.Teachers
     {
         private readonly CoursesDbContext _context;
         private readonly ICoursesService _coursesService;
+        private readonly IStudentsService _studentsService;
 
-        public TeachersService(CoursesDbContext context, ICoursesService coursesService)
+        public TeachersService(
+            CoursesDbContext context,
+            ICoursesService coursesService,
+            IStudentsService studentsService
+            )
         {
             _context = context;
             _coursesService = coursesService;
+            _studentsService = studentsService;
         }
-        public bool AddGrade(AddGradeModel model)
+        public StudentModel AddGrade(AddGradeModel model)
         {
-            if (model == null)
+            var student = _studentsService.FindStudent(model.CourseName, model.StudentEmail);
+
+            if(student == null)
             {
-                return false;
+                return null;
             }
 
-            var foundStudent = _context.Students.Where(s => s.CourseName == model.CourseName && s.Student.Email == model.StudentEmail).FirstOrDefault();
+            student.Grades = _context.Grades.Where(grade =>
+                grade.CourseName == student.CourseName &&
+                grade.StudentEmail == student.Email).ToList();
 
-            if (foundStudent == null)
+            if(student.Grades == null)
             {
-                return false;
+                student.Grades = new List<GradeModel>();
             }
 
-            foundStudent.Student.Grades.Append(new GradeModel
+            _context.Grades.Add(
+                new GradeModel
+                {
+                    CourseName = model.CourseName,
+                    StudentEmail = model.StudentEmail,
+                    Grade = model.Grade
+                }
+            );
+
+            student.Grades.Add(new GradeModel
             {
-                CreationDate = DateTime.Now,
                 Grade = model.Grade
             });
 
-            if (_coursesService.UpdateStudent(foundStudent))
+            if(_studentsService.UpdateStudent(student))
             {
-                return true;
+                _studentsService.SaveChanges();
+                return student;
             }
 
-            return false;
-        }
-
-        public async Task<CourseModel> AddStudent(CourseModel course, StudentAddModel model)
-        {
-            if (course == null || model == null)
-            {
-                return null;
-            }
-
-            else if (_context.Students.Where(s => s.Student.Email == model.Student.Email &&
-                 s.CourseName == model.CourseName).Any())
-            {
-                return null;
-            }
-            else
-            {
-                await _context.Students.AddAsync(model);
-            }
-
-            return course;
-        }
-
-        public async Task<bool> CreateCourse(CourseModel model)
-        {
-            if (_context.Courses.Where(c => c.CourseName == model.CourseName).Any())
-            {
-                return false;
-            }
-
-            await _context.AddAsync(model);
-
-            return true;
-        }
-
-        public CourseModel FindCourseByName(string courseName)
-        {
-            return _context.Courses.Where(c => c.CourseName == courseName).FirstOrDefault();
+            return null;
         }
 
         public Task<bool> RemoveGrade(CourseModel currentCourse, StudentModel student, byte grade)
@@ -95,16 +79,6 @@ namespace TamoodlApi.Data.Teachers
         public void SaveChanges()
         {
             _context.SaveChanges();
-        }
-
-        public Task<bool> UpdateGrade(CourseModel currentCourse, StudentModel student, byte grade)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<CourseModel> ViewCourse(string courseName)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

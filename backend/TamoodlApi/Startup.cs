@@ -41,7 +41,7 @@ namespace TamoodlApi
 
             // Registering services
             services.AddScoped<IUserService, UserService>();
-            // services.AddScoped<IStudentsService, StudentsService>();
+            services.AddScoped<IStudentsService, StudentsService>();
             services.AddScoped<ICoursesService, CoursesService>();
             services.AddScoped<ITeachersService, TeachersService>();
 

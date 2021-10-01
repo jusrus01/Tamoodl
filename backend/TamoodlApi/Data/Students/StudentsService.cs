@@ -15,18 +15,45 @@ namespace TamoodlApi.Data.Students
             _context = context;
         }
 
-        // Assuming that each course has a unique name
-        public async Task<StudentModel> ViewGrades(string studentsEmail, string courseName)
+        public async Task<StudentModel> AddStudent(StudentModel newStudent)
         {
-            var course =_context.Courses.Where(c => c.CourseName == courseName).FirstOrDefault();
-
-            if(course == null)
+            if(FindStudent(newStudent) == null)
             {
-                return null;
+                await _context.AddAsync(newStudent);
+                return newStudent;
             }
 
-            // return _context.Students.Where(s => s.Email == studentsEmail).FirstOrDefault();
             return null;
+        }
+
+        public StudentModel FindStudent(StudentModel student)
+        {
+            return _context.Students.Where(s => 
+                s.CourseName == student.CourseName &&
+                s.Email == student.Email).FirstOrDefault();
+        }
+
+        public StudentModel FindStudent(string courseName, string studentEmail)
+        {
+            return _context.Students.Where(s =>
+                s.CourseName == courseName &&
+                s.Email == studentEmail).FirstOrDefault();
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        public bool UpdateStudent(StudentModel student)
+        {
+            if(student == null)
+            {
+                return false;
+            }
+
+            _context.Students.Update(student);
+            return true;
         }
     }
 }
