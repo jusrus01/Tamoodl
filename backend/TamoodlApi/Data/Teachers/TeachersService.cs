@@ -40,7 +40,7 @@ namespace TamoodlApi.Data.Teachers
                 CourseName = model.CourseName,
                 StudentEmail = model.StudentEmail,
                 Grade = model.Grade,
-                Date = DateTime.Now.ToLongDateString()
+                Date = DateTime.Now.ToString("yyyy-MM-dd")
             };
 
             // adding new grade to database

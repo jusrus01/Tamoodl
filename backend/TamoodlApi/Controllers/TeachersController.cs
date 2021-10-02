@@ -33,9 +33,30 @@ namespace TamoodlApi.Controllers
         }
 
         [HttpDelete("removeGrade")]
-        public async Task<ActionResult<GradeReadDto>> RemoveGrade()
+        public async Task<ActionResult<GradeReadDto>> RemoveGrade(RemoveGradeModel model)
         {
+            if(model == null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
 
+            var student = _studentsService.FindStudent(model.CourseName, model.StudentEmail);
+
+            if(student == null)
+            {
+                return BadRequest("Could not find student");
+            }
+
+            var grade = _teachersService.RemoveGrade(model.Date, student);
+
+            if(grade == null)
+            {
+                return BadRequest("Could not find given grade");
+            }
+
+            _teachersService.SaveChanges();
+
+            return Ok(grade);
         }
 
         [HttpPost("create")]
@@ -47,7 +68,7 @@ namespace TamoodlApi.Controllers
             }
 
             var course = _mapper.Map<CourseCreateDto, CourseModel>(courseCreateDto);
-            course.Date = DateTime.Now.ToLongDateString();
+            course.Date = DateTime.Now.ToString("yyyy-MM-dd");
             
             var result = await _coursesService.AddCourse(course);
 
