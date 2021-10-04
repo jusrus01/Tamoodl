@@ -1,0 +1,12 @@
+<p>login works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="login()" action="post">
+    <div class="form-group">
+        <input maxlength="25" formControlName="email" type="text" class="mx-auto form-control rounded-left w-75" placeholder="Email" required>
+    </div>
+    <div class="form-group d-flex">
+        <input maxlength="25" formControlName="password" type="password" class="mx-auto form-control rounded-left w-75" placeholder="Password" required>
+    </div>
+    <div class="form-group text-center">
+        <button type="submit" class="btn btn-outline-success rounded submit p-2 px-4">Login</button>
+    </div>
+</form>
