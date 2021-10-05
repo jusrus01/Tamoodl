@@ -27,33 +27,40 @@ namespace TamoodlApi.Data.Accounts
             _roleManager = roleManager;
             _jwt = jwt.Value;
         }
-        public async Task<string> GetTokenAsync(TokenRequestModel model)
+        public async Task<TokenResponseModel> GetTokenAsync(TokenRequestModel model)
         {
             if (model == null)
             {
                 return null;
             }
-
+            var responseModel = new TokenResponseModel();
             var currentUser = await _userManager.FindByEmailAsync(model.Email);
 
             if (currentUser == null)
             {
-                return "User does not exist.";
+                responseModel.Error("User does not exist");
+                return responseModel;
             }
 
             try
             {
                 if (await _userManager.CheckPasswordAsync(currentUser, model.Password))
                 {
-                    return new JwtSecurityTokenHandler().WriteToken(await CreateJwtToken(currentUser));
+                    responseModel.Authenticated(
+                        new JwtSecurityTokenHandler().WriteToken(await CreateJwtToken(currentUser))
+                    );
+
+                    return responseModel;
                 }
             }
             catch (Exception e)
             {
-                return $"Something went wrong: {e.Message}";
+                responseModel.Error($"Something went wrong: {e.Message}");
+                return responseModel;
             }
 
-            return "Incorrect password";
+            responseModel.Error("Incorrect password");
+            return responseModel;
         }
 
         private async Task<JwtSecurityToken> CreateJwtToken(IdentityUser currentUser)

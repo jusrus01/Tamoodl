@@ -18,7 +18,7 @@ namespace TamoodlApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(TokenRequestModel model)
+        public async Task<ActionResult<TokenResponseModel>> Login(TokenRequestModel model)
         {
             var authToken = await _userService.GetTokenAsync(model);
 
