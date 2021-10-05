@@ -33,6 +33,12 @@ namespace TamoodlApi
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            // temporary
+            services.AddCors(options => options.AddPolicy("temp", builder =>
+                builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()));
+
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<UsersDbContext>();
 
@@ -93,6 +99,7 @@ namespace TamoodlApi
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors("temp");
 
             app.UseEndpoints(ep => ep.MapControllers());
         }
