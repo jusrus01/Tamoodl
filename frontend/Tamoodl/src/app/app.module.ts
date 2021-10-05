@@ -7,6 +7,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
+import { TeachersComponent } from './teachers/teachers.component';
+import { AdminsComponent } from './admins/admins.component';
+import { StudentsComponent } from './students/students.component';
+import { ForumsComponent } from './forums/forums.component';
 
 export const routes : Routes = [
     { path: '', component: HomeComponent, data: { title: "Home" }, canActivate: [AuthGuard] },
@@ -18,7 +22,11 @@ export const routes : Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    TeachersComponent,
+    AdminsComponent,
+    StudentsComponent,
+    ForumsComponent
   ],
   imports: [
     BrowserModule,
